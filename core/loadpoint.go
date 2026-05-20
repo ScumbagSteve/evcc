@@ -2001,8 +2001,8 @@ func (lp *Loadpoint) Update(sitePower, batteryBoostPower float64, consumption, f
 		}
 	}
 
-	// identify connected vehicle
-	if lp.connected() && !lp.chargerHasFeature(api.IntegratedDevice) {
+	// identify vehicle (even when not connected, so vehicleIdentity stays published)
+	if !lp.chargerHasFeature(api.IntegratedDevice) {
 		// read identity and run associated action
 		lp.identifyVehicle()
 
