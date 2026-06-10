@@ -17,12 +17,20 @@ export async function expectModalHidden(modal: Locator): Promise<void> {
   await expect(modal).toHaveAttribute("aria-hidden", "true");
 }
 
-export async function editorClear(editor: Locator, iterations = 10): Promise<void> {
-  for (let i = 0; i < iterations; i++) {
-    await editor.locator(".view-line").nth(0).click();
+export async function editorClear(editor: Locator): Promise<void> {
+  const firstLine = editor.locator(".view-line").nth(0);
+  const content = editor.locator(".view-lines");
+  // wait for the async content load, otherwise clearing races the arriving text
+  await expect(firstLine).not.toHaveText("");
+  // retry until the editor is verified empty, keystrokes are dropped while monaco initializes
+  const deadline = Date.now() + 10_000;
+  do {
+    await firstLine.click();
     await editor.page().keyboard.press("ControlOrMeta+KeyA", { delay: 50 });
     await editor.page().keyboard.press("Backspace", { delay: 50 });
-  }
+    if ((await content.textContent())?.trim() === "") return;
+  } while (Date.now() < deadline);
+  await expect(content, "editor should be empty after clearing").toHaveText("");
 }
 
 export async function editorPaste(editor: Locator, page: Page, text: string): Promise<void> {
@@ -129,4 +137,34 @@ export async function getDatalistOptions(input: Locator): Promise<string[]> {
     const datalist = document.getElementById(datalistId);
     return Array.from(datalist?.querySelectorAll("option") || []).map((opt) => opt.value);
   });
+}
+
+type AppState = {
+  evccAppCapabilities: string[];
+  __appEvent: unknown;
+  ReactNativeWebView: { postMessage: (m: string) => void };
+};
+
+export async function enableAppContext(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "userAgent", {
+      value: "evcc/playwright",
+      configurable: true,
+    });
+    const w = window as unknown as AppState;
+    w.evccAppCapabilities = ["download"];
+    w.__appEvent = undefined;
+    w.ReactNativeWebView = {
+      postMessage: (msg: string) => {
+        w.__appEvent = JSON.parse(msg);
+      },
+    };
+  });
+}
+
+export async function expectAppEvent(page: Page): Promise<unknown> {
+  await expect
+    .poll(async () => page.evaluate(() => (window as unknown as AppState).__appEvent !== undefined))
+    .toBe(true);
+  return page.evaluate(() => (window as unknown as AppState).__appEvent);
 }

@@ -46,6 +46,10 @@
     "noBattery": "Nėra sukonfigūruotų kaupiklių.",
     "usageTab": "Kaupiklio naudojimas"
   },
+  "colors": {
+    "auto": "Auto",
+    "hex": "Hex spalva"
+  },
   "config": {
     "aux": {
       "description": "Įrenginys, kuris koreguoja savo suvartojimą pagal esamą energijos perteklių (pvz., išmanieji vandens šildytuvai). evcc tikisi, kad šis įrenginys prireikus sumažins energijos suvartojimą.",
@@ -146,8 +150,6 @@
       "forecast": "Prognozė",
       "gridPrice": "Energijos pirkimo kaina",
       "heaterTempLimit": "Šildymo limitas",
-      "hemsActiveLimit": "Aktyvus limitas",
-      "hemsType": "Komunikacija",
       "identifier": "RFID-Identifikatorius",
       "loginBlocked": "Pasiektas prisijungimų limitas",
       "max": "max",
@@ -163,6 +165,7 @@
       "powerRange": "Galia",
       "price": "Kaina",
       "range": "Nuvažiuojamas atstumas",
+      "returnEnergy": "Energija (atiduota)",
       "singlePhase": "Vienfazis",
       "soc": "Įkrova",
       "solarForecast": "Saulės prognozė",
@@ -176,10 +179,6 @@
       "A": "A (neprijungtas)",
       "B": "B (prijungtas)",
       "C": "C (įkrauna)"
-    },
-    "deviceValueHemsType": {
-      "eebus": "naudoja EEBus",
-      "relay": "naudoja Relė"
     },
     "devices": {
       "auxMeter": "Išmanusis vartotojas",
@@ -885,7 +884,7 @@
       "greenShareSub2": "energijos kaupikliai",
       "power": "Įkrovimo galia",
       "powerSub1": "{activeClients} iš {totalClients} dalyvių",
-      "powerSub2": "įkrauna…",
+      "powerSub2": "įkrauna.",
       "tabTitle": "Bendruomenės"
     },
     "savings": {
@@ -1168,13 +1167,13 @@
       "battery": "Kaupiklis",
       "batteryCharge": "Kaupiklis įkraunamas",
       "batteryDischarge": "Kaupiklis iškraunamas",
-      "batteryForecastEmpty": "Tuščias nuo {time}",
-      "batteryForecastFull": "Pilnas nuo {time}",
-      "batteryForecastNextHigh": "Sekanti didelė",
-      "batteryForecastNextLow": "Sekanti žema",
+      "batteryDischargeHold": "Kaupiklis (užblokuotas)",
+      "batteryForecastEmpty": "Tuščias",
+      "batteryForecastFull": "Pilnas",
+      "batteryForecastNextHigh": "Didelė",
+      "batteryForecastNextLow": "Žema",
       "batteryGridChargeActive": "Įkrovimas iš tinklo: aktyvus",
       "batteryGridChargeLimit": "Įkrauti iš tinklo: kai",
-      "batteryHold": "Kaupiklis (užblokuotas)",
       "batteryTooltip": "{energy} iš {total} ({soc})",
       "forecast": "Prognozė",
       "forecastTooltip": "prognozė: likusi saulės energijos gamyba šiandien",
@@ -1184,7 +1183,7 @@
       "loadpointsLimit": "{limit} limitas",
       "noEnergy": "Nėra skaitiklių duomenų",
       "pv": "Saulės jėgainė",
-      "pvExport": "Tinklo eksportas",
+      "pvExport": "Eksportas",
       "pvProduction": "Gamyba",
       "selfConsumption": "Sunaudojama iškart"
     },
@@ -1195,7 +1194,6 @@
       "waitForVehicle": "Paruošta šildyti…"
     },
     "hemsWarning": {
-      "description": "Įkrovimas apribotas, kad neviršyti {limit}.",
       "title": "Išorinis limitas:"
     },
     "history": {
@@ -1415,6 +1413,7 @@
     "updatePassword": "Pakeisti slaptažodį"
   },
   "session": {
+    "addOdometer": "Įrašyti skaičių",
     "cancel": "Atšaukti",
     "co2": "CO₂",
     "date": "Periodas",
@@ -1424,7 +1423,8 @@
     "meterstart": "Skaitiklis pradžia",
     "meterstop": "Skaitiklis pabaiga",
     "odometer": "Odometras",
-    "price": "Kaina",
+    "price": "Išlaidos",
+    "soc": "Automobilio įkrova",
     "started": "Pradėta",
     "title": "Įkrovimo sesija"
   },
@@ -1432,6 +1432,7 @@
     "avgPower": "⌀ Galia",
     "avgPrice": "⌀ Kaina",
     "chargeDuration": "Trukmė",
+    "chargedSoc": "Įkrova",
     "chartTitle": {
       "avgCo2ByGroup": "⌀ CO₂ {byGroup}",
       "avgPriceByGroup": "⌀ Kaina {byGroup}",
@@ -1463,8 +1464,10 @@
       "meterstart": "Skaitiklis pradžia (kWh)",
       "meterstop": "Skaitiklis pabaiga (kWh)",
       "odometer": "Odometras (km)",
-      "price": "Kaina",
+      "price": "Išlaidos",
       "priceperkwh": "Kaina/kWh",
+      "socend": "įkrovimo pabaiga (%)",
+      "socstart": "Įkrovimo pradžia (%)",
       "solarpercentage": "Saulės (%)",
       "vehicle": "Automobilis"
     },
@@ -1480,7 +1483,7 @@
     "group": {
       "co2": "Emisijos",
       "grid": "Tinklo",
-      "price": "Kaina",
+      "price": "Išlaidos",
       "self": "Saulės"
     },
     "groupBy": {
@@ -1506,7 +1509,7 @@
     "total": "Suma",
     "type": {
       "co2": "CO₂",
-      "price": "Kaina",
+      "price": "Išlaidos",
       "solar": "Saulės"
     },
     "vehicle": "Automobilis"
