@@ -7,6 +7,10 @@ params:
   - name: usage
     choice: ["pv"]
   - name: host
+    - name: inverter_id
+    description: "Optional, nur für Dimming benötigt"
+     help: Eingabe der primären Wechselrichter ID. Falls mehrere existieren, einen beliebigen wählen.
+    advanced: true
 render: |
   type: custom
   power:
@@ -17,3 +21,10 @@ render: |
     source: http
     uri: http://{{ .host }}/api/livedata/status
     jq: .total.YieldTotal.v
+  {{- if .inverter_id }}
+  setpoint:
+    source: http
+    uri: http://{{ .host }}/api/limit/config
+    method: POST
+    body: '{"serial": "0x{{ printf "%016x" .inverter_id }}", "limit_value": {{ .setpoint }}, "limit_type": 3}' #über limit_type 3 wird die zur Verfügung stehende Leistung gleichmäßig auf alle Wechselrichter verteilt
+  {{- end }}
