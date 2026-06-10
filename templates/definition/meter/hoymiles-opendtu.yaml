@@ -8,8 +8,12 @@ params:
     choice: ["pv"]
   - name: host
   - name: inverter_id
-    description: "Optional, nur für Dimming benötigt"
-    help: Eingabe der primären Wechselrichter ID. Falls mehrere existieren, einen beliebigen wählen.
+    description:
+      de: "Optional, nur für Dimming benötigt"
+      en: "Optional, only needed for dimming"
+    help:
+      de: "Eingabe der primären Wechselrichter ID. Falls mehrere existieren, einen beliebigen wählen."
+      en: "Enter the primary inverter ID. If multiple exist, choose any."
     advanced: true
 render: |
   type: custom
